@@ -1,11 +1,12 @@
-import Skewer
+import Type2Utilities
 
 __author__ = 'bakhtyar'
 
 def main():
     skew = []
-    #kew.append(Skewer.skewfilterDpkt("/home/bakhtyar/Dropbox/Mtech Final year project/Python codes/Final year Project/TestDumps/Catatonic.pcap"))
-    skew = (Skewer.skewfilterDpkt("/home/bakhtyar/Dropbox/Mtech Final year project/Python codes/Final year Project/TestDumps/Type2/Device2.pcap"))
+    # kew.append(Skewer.skew_generator_DPKT("/home/bakhtyar/Dropbox/Mtech Final year project/Python codes/Final year Project/TestDumps/Catatonic.pcap"))
+    skew = (Type2Utilities.skew_generator_DPKT(
+        "/home/bakhtyar/Dropbox/Mtech Final year project/Python codes/Final year Project/TestDumps/Type2/Device2.pcap"))
     print skew
 
 #    interval = len(skew)/4
@@ -20,10 +21,10 @@ def main():
 #            chunks[x][y][1] = chunks[x][y][1]- starttime2
 #        print chunks[x][0:20]
 
-    #skew.append(Skewer.skewfilterDpkt("/home/bakhtyar/Dropbox/Mtech Final year project/Python codes/Final year Project/TestDumps/Device3.pcap"))
-    #skew.append(Skewer.skewfilterDpkt("/home/bakhtyar/Dropbox/Mtech Final year project/Python codes/Final year Project/TestDumps/Device1.pcap"))
-    #skew.append(Skewer.skewfilterDpkt("/home/bakhtyar/Dropbox/Mtech Final year project/Python codes/Final year Project/TestDumps/Device2.pcap"))
-    Skewer.drawSkewGraph([skew])
+    # skew.append(Skewer.skew_generator_DPKT("/home/bakhtyar/Dropbox/Mtech Final year project/Python codes/Final year Project/TestDumps/Device3.pcap"))
+    # skew.append(Skewer.skew_generator_DPKT("/home/bakhtyar/Dropbox/Mtech Final year project/Python codes/Final year Project/TestDumps/Device1.pcap"))
+    # skew.append(Skewer.skew_generator_DPKT("/home/bakhtyar/Dropbox/Mtech Final year project/Python codes/Final year Project/TestDumps/Device2.pcap"))
+    Type2Utilities.drawSkewGraph([skew])
 
 
 if __name__ == '__main__':

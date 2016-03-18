@@ -1,12 +1,9 @@
-
-# needed imports
-from sklearn.preprocessing import StandardScaler
-
-from matplotlib import pyplot as plt
-from hcluster import pdist,linkage,dendrogram,average,fcluster
 import numpy as np
 from sklearn.cluster import DBSCAN
+from sklearn.preprocessing import StandardScaler
 
+from hcluster import pdist, linkage, dendrogram, fcluster
+from matplotlib import pyplot as plt
 from matplotlib.pyplot import scatter
 from pylab import figure, show
 
@@ -40,6 +37,7 @@ def dendrogramMaker(X,max_d):
     )
     plt.show()
 
+
 def DBCluster(X,threshold):
     X = StandardScaler().fit_transform(X)
     xx, yy = zip(*X)
@@ -51,15 +49,14 @@ def DBCluster(X,threshold):
     n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
     print n_clusters_
 
+
 def teststuff():
     X = np.random.rand(110, 100)
     X[0:100, :] *= 2
     #Y = pdist(X)
-
     #print Y
     #Z = linkage(Y)
     #print Z
-
     plt.figure(figsize=(15, 10))
     plt.title('Hierarchical Clustering Dendrogram')
     plt.xlabel('sample index')
@@ -79,9 +76,7 @@ def fancy_dendrogram(*args, **kwargs):
     if max_d and 'color_threshold' not in kwargs:
         kwargs['color_threshold'] = max_d
     annotate_above = kwargs.pop('annotate_above', 0)
-
     ddata = dendrogram(*args, **kwargs)
-
     if not kwargs.get('no_plot', False):
         plt.title('Hierarchical Clustering Dendrogram (truncated)')
         plt.xlabel('sample index or (cluster size)')
@@ -93,7 +88,8 @@ def fancy_dendrogram(*args, **kwargs):
                 plt.plot(x, y, 'o', c=c)
                 plt.annotate("%.3g" % y, (x, y), xytext=(0, -5),
                              textcoords='offset points',
-                             va='top', ha='center')
+                             va='top',
+                             ha='center')
         if max_d:
             plt.axhline(y=max_d, c='k')
     return ddata

@@ -1,3 +1,6 @@
 ICMP timestamp requests 
 sudo hping3 -c 1000 -V -I wlan0 -1 -C 13  192.168.1.126
 
+TCP 
+sudo hping3 -c 1000 -I wlan0 -p 5900 -k -S --tcp-timestamp 192.168.168.114
+

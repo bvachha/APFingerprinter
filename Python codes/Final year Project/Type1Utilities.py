@@ -23,9 +23,10 @@ __author__ = 'Bakhtyar'
 #
 #
 
-from scapy.layers.dot11 import *
 import copy
 import numpy as np
+
+from scapy.layers.dot11 import *
 
 
 def binner(arr, bins):  # return float values in arr in proper bin
@@ -98,7 +99,6 @@ def sigGen(bins, percentages, means):
 def Generator(path, lim=400):
     status = True
     dump = sniff(offline=path, filter="type mgt subtype probe-resp")
-    print dump
     if dump is None:
         return [], False
     timestamps = []  # List of full resolution timestamps values
@@ -116,7 +116,6 @@ def Generator(path, lim=400):
         bins.append(x)
 
     print "Binning timestamps"
-    print bins
     binnedStamps = binner(timestamps, bins)  # Put timestamps in correct bins
     print "Finding Mean values of bins"
     means = binavg(timestamps, bins)  # Find mean of each bin value
