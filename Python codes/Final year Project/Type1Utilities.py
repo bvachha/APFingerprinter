@@ -23,7 +23,6 @@ __author__ = 'Bakhtyar'
 #
 #
 
-import copy
 import numpy as np
 
 from scapy.layers.dot11 import *
@@ -96,7 +95,7 @@ def sigGen(bins, percentages, means):
     return signature
 
 
-def Generator(path, lim=400):
+def create_type1_signature(path, lim=400):
     status = True
     dump = sniff(offline=path, filter="type mgt subtype probe-resp")
     if dump is None:

@@ -79,7 +79,7 @@ def add_New_Signature():
             path = raw_input(">")
             print "Enter the device ID"
             deviceid = raw_input(">")
-            driversignature, status = Type1Utilities.Generator(path)
+            driversignature, status = Type1Utilities.create_type1_signature(path)
             if status:
                 print "Signature has been created"
                 AddToDB.add2Db(deviceid, driversignature, 1)

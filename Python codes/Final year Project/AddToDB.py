@@ -141,7 +141,7 @@ def addAll(path, type, lim=0):
         folder = os.listdir(path)
         for name in folder:
             if name[-4:] == 'pcap':
-                sig, status = Type1Utilities.Generator(path + str(name), lim)
+                sig, status = Type1Utilities.create_type1_signature(path + str(name), lim)
                 add2Db(name[:-5], sig, 1)
         printDBkeys()
     elif type == 2:

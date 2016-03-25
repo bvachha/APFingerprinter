@@ -35,7 +35,7 @@ def addAll(lim):
     folder = os.listdir("TestDumps/")
     for name in folder:
         if name[-4:] == 'pcap':
-            sig = Type1Utilities.Generator("TestDumps/" + str(name), lim)
+            sig = Type1Utilities.create_type1_signature("TestDumps/" + str(name), lim)
             AddToDB.add2Db(name[:-5], sig)
     AddToDB.printDBkeys()
 
@@ -54,7 +54,7 @@ def main():
     #Testing.test(100,1000,50)
     #AddToDB.purgeDB()
     #AddToDB.addAll(800)
-    #sig = Df.Generator("TestDumps/ProbeReqs2(Dlink).pcap",800)
+    # sig = Df.create_type1_signature("TestDumps/ProbeReqs2(Dlink).pcap",800)
     #if sig == 0:
     #    return
     #print "---------------------------------------------------------------------------------------"
@@ -64,7 +64,7 @@ def main():
     # AddToDB.purgeDB()
     """Type1"""
     #AddToDB.addAll("/home/bakhtyar/Dropbox/Mtech Final year project/Python codes/Final year Project/TestDumps/Type1/",1)
-    # test,status = DriverFingerprint.Generator("TestDumps/Type1/001b77671742().pcap",lim = 10000)
+    # test,status = DriverFingerprint.create_type1_signature("TestDumps/Type1/001b77671742().pcap",lim = 10000)
     # print Comparator.findMatchingSignature(test,1)[0]
     # skew.append(Skewer.skew_generator_DPKT("TestDumps/Hostel1.pcap"))
     # skew.append(Skewer.skew_generator_DPKT("TestDumps/Hostel1.pcap"))
