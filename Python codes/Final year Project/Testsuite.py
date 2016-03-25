@@ -3,21 +3,11 @@ import os
 
 from pylab import figure, show
 
-import AddToDB
 import Comparator
 import Type1Utilities as Df
 
 
-def addAll(lim):
-    folder = os.listdir("TestDumps/Type1/")
-    for name in folder:
-        if name[-4:] == 'pcap':
-            sig, status = Df.Generator("TestDumps/Type1/" + str(name), lim)
-            AddToDB.add2Db(name[:-5], sig, 1)
-    AddToDB.printDBkeys()
-
-
-def test_Type1_Different_Bin_Intervals(start, end, interval, type):
+def test_dr_vs_capture_time(start, end, interval, type):
     """
     Test signatures with different bin sizes
     :param start:
@@ -77,8 +67,20 @@ def test_Type1_Different_Bin_Intervals(start, end, interval, type):
         # Todo type 3 binning
 
 
-def Detection_Rate_VS_Num_of_Devices():
-    pass
+def test1_detection_rate_vs_num_devices(type, signature_directory, test_directory):
+    # todo type 1 test1
+    if type == 1:
+        for
+
+    if type == 2:
+        pass
+        # todo type 2 test1
+    if type == 3:
+        pass
+        # todo type 3 test1
+    if type == 4:
+        pass
+        # todo type 4 test1
 
 
 def TPR_vs_FNG():
@@ -86,7 +88,7 @@ def TPR_vs_FNG():
 
 
 def main():
-    test_Type1_Different_Bin_Intervals(0, 10000, 1000)
+    test_different_bin_intervals(0, 10000, 1000)
 
 
 if __name__ == '__main__':

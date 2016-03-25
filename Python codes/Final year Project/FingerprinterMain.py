@@ -50,15 +50,12 @@ def live_host_check():
     print "Enter the address"
     target = raw_input(">")
     hostup = False
-
     if ICMPinger(target):
         print "ICMP check successful => Host is up and responding to ICMP pings"
         hostup = True
-
     elif TCPinger(target) and hostup == False:
         print "TCP check successful => Host is up and responding to TCP pings"
         hostup = True
-
     elif not hostup:
         print "Host is down"
 
@@ -66,8 +63,7 @@ def live_host_check():
 def add_New_Signature():
     # TODO Fingerprint addition menu
     sigtype = 0
-
-    while sigtype != 4:
+    while True:
         print "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" \
               "\nEnter the type of signature" \
               "\n1)Device Driver" \
@@ -78,7 +74,8 @@ def add_New_Signature():
 
         if sigtype == 1:
             # TODO Driver fingerprint input
-            print("Enter the path of the pcap file containing the probe request frames")
+            print "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" \
+                  "\nEnter the path of the pcap file containing the probe request frames"
             path = raw_input(">")
             print "Enter the device ID"
             deviceid = raw_input(">")
@@ -106,7 +103,6 @@ def add_New_Signature():
                 print "Error in signature pcap file"
 
         elif sigtype == 3:
-            # Todo User device clockskew signature input
             print "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" \
                   "\nEnter the path of the pcap file containing the beacon frames"
             path = raw_input(">")
@@ -148,27 +144,44 @@ def add_New_Signature():
 
 def authorization_check():
     # TODO Fingerprint analysis and matching menu
-    print "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" \
-          "\nEnter the path of the pcap file containing the beacon frames"
-    path = raw_input(">")
-    print "Enter the device type(1:Driver,2:Access Point,3:Remote Device)"
-    id = raw_input(">")
-    if type == 1:
-        pass
-    elif type == 2:
-        driversignature, status = Type2Utilities.create_Type2_Signature(path)
-        result = Comparator.findMatchingSignature(driversignature)
-        print result
-    elif type == 3:
-        testskew = Type3Utilities.ICMPSkewGenerator(path)
-        testSig = Type2Utilities.create_Type2_Signature(testskew)
-        result = Comparator.findMatchingSignature(testSig, 3)
+    while True:
+        print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" \
+              "\nEnter the path of the pcap file containing the device capture file" \
+              "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+        path = raw_input(">")
+        print "Enter the device type\n" \
+              "1:Driver\n" \
+              "2:Access Point\n" \
+              "3:Remote Device(ICMP)\n" \
+              "4:Remote Device(TCP)\n" \
+              "5:Exit"
+        type = input(">")
+        print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+        if type == 1:
+            pass
+        elif type == 2:
+            driversignature, status = Type2Utilities.create_Type2_Signature(path)
+            result = Comparator.findMatchingSignature(driversignature)
+            print result
+        elif type == 3:
+            testSig = Type2Utilities.create_type3_Signature(path)
+            result = Comparator.findMatchingSignature(testSig, 3)
+        elif type == 4:
+            testSig = Type3Utilities.create_type4_signature(path)
+            result = Comparator.findMatchingSignature(testSig, 4)
+        elif type == 5:
+            return
+        else:
+            print "Invalid Choice"
+
 
 
 def db_Manager():
     choice = 0
-    while choice != 5:
-        print "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" \
+    while True:
+        print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" \
+              "\nDATABASE MANAGEMENT MENU" \
+              "\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" \
               "\nEnter the option" \
               "\n1)View the current Database" \
               "\n2)View an entry" \
@@ -176,33 +189,26 @@ def db_Manager():
               "\n4)Purge the database" \
               "\n5)Back"
         choice = input(">")
-
+        print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
         if choice == 1:
             AddToDB.printDBkeys()
-
         elif choice == 2:
             print "Enter the ID to view"
             id = raw_input(">")
             AddToDB.printDBval(id)
-
         elif choice == 3:
             print "Enter the key value to delete"
             key = raw_input(">")
             AddToDB.removeFromDB(key)
-
         elif choice == 4:
             print("Are you sure you wish to delete the entire signature file??(Y/n)")
             check = raw_input(">")
-
             if check == 'Y' or check == 'y':
                 AddToDB.purgeDB()
-
             else:
                 pass
-
         elif choice == 5:
-            break
-
+            return
         else:
             print "Invalid option"
 

@@ -1,7 +1,6 @@
 from scapy.all import *
 
 import AddToDB
-import Comparator
 import Type1Utilities
 import Type3Utilities
 
@@ -62,14 +61,18 @@ def main():
     #dump = rdpcap("/home/bakhtyar/Dropbox/Mtech Final year project/Python codes/Final year Project/TestDumps/NITRCS.pcap")
     max_d = 1
     skew = []
+    # AddToDB.purgeDB()
     """Type1"""
+    #AddToDB.addAll("/home/bakhtyar/Dropbox/Mtech Final year project/Python codes/Final year Project/TestDumps/Type1/",1)
     # test,status = DriverFingerprint.Generator("TestDumps/Type1/001b77671742().pcap",lim = 10000)
     # print Comparator.findMatchingSignature(test,1)[0]
     # skew.append(Skewer.skew_generator_DPKT("TestDumps/Hostel1.pcap"))
     # skew.append(Skewer.skew_generator_DPKT("TestDumps/Hostel1.pcap"))
     # skew.append(Skewer.skew_generator_DPKT("TestDumps/LabCap.pcap"))
     # skew.append(Skewer.skew_generator_DPKT("TestDumps/Device1.pcap"))
+
     """Type 2"""
+    #AddToDB.addAll("/home/bakhtyar/Dropbox/Mtech Final year project/Python codes/Final year Project/TestDumps/Type2/",2)
     # skew.append(Type2Utilities.skew_generator_DPKT("TestDumps/Type2/94fbb2dddbfc_3.pcap"))
     # skew.append(Type2Utilities.skew_generator_DPKT("TestDumps/Type2/80a1d7e0c06a(bxghosh).pcap"))
     # skew.append(Type2Utilities.skew_generator_DPKT("TestDumps/Type2/80a1d7e0c06a(bxghosh)1.pcap"))
@@ -96,20 +99,18 @@ def main():
     # skew.append(Type2Utilities.skew_generator_DPKT("TestDumps/Type2/Device2.pcap"))
     # skew.append(Type2Utilities.skew_generator_DPKT("TestDumps/Type2/Device3.pcap"))
     # skew.append(Type2Utilities.skew_generator_DPKT("TestDumps/Type2/CiscoLi(virus308)-7.pcap"))
-
-
     # Test = Type2Utilities.create_Type2_Signature("TestDumps/Type2/CiscoLi(virus308)-1.pcap")
     # skew.append(Type2Utilities.skew_generator_DPKT("TestDumps/Type2/54b80a95ce07(QorqlBSNL)_1.pcap"))
-    # AddToDB.purgeDB()
+
     # AddToDB.printDBkeys()
-    # AddToDB.addAll("TestDumps/Type2/",2)
+    #AddToDB.addAll("TestDumps/Type2/",2)
     # Comparator.findMatchingSignature(Test,2)
     """Type 3"""
     # AddToDB.purgeDB()
-    Test = Type3Utilities.create_type4_signature("TestDumps/Type3/TCPopts/303a645fb9c3.pcap")
+    # Test = Type3Utilities.create_type4_signature("TestDumps/Type3/TCPopts/303a645fb9c3.pcap")
     # AddToDB.addAll("/home/bakhtyar/Dropbox/Mtech Final year project/Python codes/Final year Project/TestDumps/Type3/TCPopts/",4)
-    AddToDB.printDBkeys()
-    Comparator.findMatchingSignature(Test, 4)
+    # AddToDB.printDBkeys()
+    # Comparator.findMatchingSignature(Test, 4)
 
     # skew.append(Type3utilities.ICMPSkewGenerator("TestDumps/Type3/0c60763ea14e.pcap",binning = True))
     # ---skew.append(Type3utilities.ICMPSkewGenerator("TestDumps/Type3/2c56dc06f5d3.pcap"))
@@ -163,7 +164,9 @@ def main():
     # skew.append(Type3utilities.TCPSkewGenerator("TestDumps/Type3/TCPopts/lib3.pcap",binning = True))
     # skew.append(Type3utilities.TCPSkewGenerator("TestDumps/Type3/TCPopts/lib4.pcap",binning = True))
     # skew.append(Type3utilities.TCPSkewGenerator("TestDumps/Type3/TCPopts/lib5.pcap",binning = True))
-
+    # skew.append(Type3utilities.TCPSkewGenerator("TestDumps/Type3/TCPopts/lib5.pcap",binning = True))
+    """Type 4"""
+    #AddToDB.addAll("/home/bakhtyar/Dropbox/Mtech Final year project/Python codes/Final year Project/TestDumps/Type3/TCPopts/",4)
     # for skews in skew:
     #    for x in xrange(20):
     #        print skews[x]
@@ -175,8 +178,14 @@ def main():
     #n = len(temp)/5
     #print n
     #multi = list(chunks(temp,n))
-    #Skewer.drawSkewGraph(skew)
-    #AddToDB.printDBkeys()
+    path = "/home/bakhtyar/Dropbox/Mtech Final year project/Python codes/Final year Project/TestDumps/Type4/"
+    folder = os.listdir(path)
+    for name in folder:
+        if name[-4:] == 'pcap':
+            print "Processing " + str(path + str(name))
+            skew = [Type3Utilities.TCPSkewGenerator(str(path + str(name)), binning=True)]
+            Type3Utilities.drawSkewGraph(skew)
+        #AddToDB.printDBkeys()
     #AddToDB.purgeDB()
     #AddToDB.removeFromDB('Azurewav:a3:52:d5.pcap')
     #AddToDB.add2Db("74:04:2b:41:8e:dd", sig)

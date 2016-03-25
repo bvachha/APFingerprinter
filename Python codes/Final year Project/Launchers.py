@@ -1,5 +1,4 @@
 import shlex
-from subprocess import Popen
 
 from scapy.all import *
 from scapy.layers.inet import IP
@@ -14,10 +13,10 @@ def main():
     Main function for Launcher Module
     :return: returns nothing
     """
-    hosts = [8, 110, 133, 153, 165, 211]
+    hosts = [16, 45, 73, 102, 129, 172]
     hostlist = []
     for host in hosts:
-        hostlist.append("192.168.168." + str(host))
+        hostlist.append("172.16.4." + str(host))
     TCPlaunch(hostlist)  #42.0.84
 
 
@@ -78,23 +77,23 @@ def TCPlaunch(dest=['192.168.1.250']):
     count += 1
     print "Connecting and acquiring fingerprint data for " + str(d)
 
-    ans = sniff(filter='icmp[icmptype] = icmp-tstampreply and host ' + d, count=3600 * len(dest), timeout=1010)
+    # ans = sniff(filter='tcp[tcp-tsori] = icmp-tstampreply and host ' + d, count=3600 * len(dest), timeout=1010)
     # ans = sniff(filter='icmp[icmptype] = icmp-tstampreply',count=1000,offline="/home/bakhtyar/Dropbox/Mtech Final year project/Python codes/Final year Project/TestDumps/Type3/Rand10-icmp.pcap")
-    print "Length of ans" + str(len(ans))
+    #print "Length of ans" + str(len(ans))
 
-    for x in xrange(1, len(ans)):
-        RTval = (ans[x].ts_rx - ans[0].ts_rx)
-        STval = (ans[x].ts_ori - ans[0].ts_ori)
-        skew.append((STval, RTval - STval))
+    # for x in xrange(1, len(ans)):
+    #    RTval = (ans[x].ts_rx - ans[0].ts_rx)
+    #    STval = (ans[x].ts_ori - ans[0].ts_ori)
+    #    skew.append((STval, RTval - STval))
 
     #            if key in s.keys():
     #                s[key] += 1
     #
     #            else:
     #                s[key] = 1
-    final.append(skew)
+    #final.append(skew)
 
-    return final
+    #return final
 
 
 def find_and_log():

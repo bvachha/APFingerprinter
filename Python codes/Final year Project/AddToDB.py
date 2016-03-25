@@ -92,8 +92,13 @@ def printDBkeys():
     temp = cPickle.load(Db)
     Db.close()
     print" Current Database:"
+    print "--------------------------------------------------------------"
+    print "|\tDevice\t\t|\tType\t|"
+    print "--------------------------------------------------------------"
+
     for x in temp.keys():
-        print "Device:" + str(x)
+        print "|\t" + str(x) + "\t|\t" + str(temp[x][1]) + "\t|"
+        print "--------------------------------------------------------------"
 
 
 def printDBval(keyVal):
@@ -117,13 +122,18 @@ def purgeDB():
     Remove all key values from Database
     :return: Returns nothing
     """
-    pathDB = "MasterSigBase/SigBase.pkl"
-    temp = {}
-    Db = open(pathDB, 'w')
-    cPickle.dump(temp, Db, -2)
-    print "Database purged"
-    Db.close()
-    print "Database closed"
+    print "ARE YOU SURE YOU WANT TO PURGE THE DATABASE?(yes/no)"
+    answer = raw_input(">")
+    if answer == "yes":
+        pathDB = "MasterSigBase/SigBase.pkl"
+        temp = {}
+        Db = open(pathDB, 'w')
+        cPickle.dump(temp, Db, -2)
+        print "Database purged"
+        Db.close()
+        print "Database closed"
+    else:
+        return
 
 
 def addAll(path, type, lim=0):

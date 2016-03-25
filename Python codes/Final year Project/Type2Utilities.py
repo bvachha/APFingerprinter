@@ -44,9 +44,6 @@ skew = []
 getcontext().prec = 9  # Set precision of the decimal values to 9
 
 
-# TODO what is the difference between beaconsignature and skew generator?
-
-
 def binner(skew, binsize):
     """
     puts the timestamps in the bin and generates the average timestamp for all the devices in the bin
@@ -67,7 +64,7 @@ def binner(skew, binsize):
     return newskew
 
 
-def skew_generator_DPKT(dumppath, binning=True, binsize=10):
+def skew_generator_DPKT(dumppath, binning=True, binsize=10, size=0):
     """
     Uses a dpkt approach to generate skew tuples
     :param dumppath: path of the pcap file to process
@@ -102,9 +99,12 @@ def skew_generator_DPKT(dumppath, binning=True, binsize=10):
                                  float((Decimal(time) - apclkinit) - (Decimal(ts) - sysclkinit) * 1000000)])
     print("Skew successfully generated")
     print ("Number of packets analysed:" + str(len(skew)))
-    newskew = binner(skew, binsize)
-    return newskew
-
+    if size > 0 and size <= len(skew):
+        skew = skew[0:size]
+    if binning:
+        newskew = binner(skew, binsize)
+        return newskew
+    return skew
 
 def skewfilterScapy(dumppath):  # uses a scapy implementation to generate skew tuples
     print ("Creating skew list for file: " + dumppath)
@@ -121,17 +121,18 @@ def skewfilterScapy(dumppath):  # uses a scapy implementation to generate skew t
     return skew
 
 
-def create_Type2_Signature(path):
+# Todo argument for size of the signature to test
+def create_Type2_Signature(path, size=0):
     """
     creates the final signature from the pcap file
     :param path: path to the pcap file containing the signature
     :return: slope and intercept pair for the device
     """
-    skew = skew_generator_DPKT(path)
+    skew = skew_generator_DPKT(path, size)
     xvals = []
     yvals = []
+    print "xxxxxxxxxxxxxxxxxxxxxxxxxx"
     for j in xrange(len(skew)):
-        print "xxxxxxxxxxxxxxx"
         xvals.append(
             float(skew[j][0] - skew[0][0]))  # List of X coordinates as the centered timestamp values of fingerprinter
         yvals.append(

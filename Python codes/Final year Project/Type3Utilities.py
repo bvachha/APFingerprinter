@@ -61,7 +61,7 @@ def ByteOrderCheck(dumppath):
     return False
 
 
-def ICMPSkewGenerator(dumppath, binning=True, binsize=10):
+def ICMPSkewGenerator(dumppath, binning=True, binsize=10, size=0):
     """
     Creates a skew list for pcap file containing ICMP timestamp data
     :param dumppath: Path for the dump file
@@ -119,14 +119,15 @@ def ICMPSkewGenerator(dumppath, binning=True, binsize=10):
             RTval = rclk - rclkinit  # Extract Remote clock values
             STval = sclk - sysclkinit  # Extract system clock values
             skew.append((STval, RTval - STval))
-
+    if size > 0 and size <= len(skew):
+        skew = skew[0:size]
     if binning:
         newskew = binner(skew, binsize)
         return newskew
     return skew
 
 
-def TCPSkewGenerator(dumppath, binning=True, binsize=10, SIncr=100):
+def TCPSkewGenerator(dumppath, binning=True, binsize=10, SIncr=100, size=0):
     """
     Creates a skew list for pcap file containing TCP timestamp data
     :param dumppath: Path for the dump file
@@ -159,9 +160,13 @@ def TCPSkewGenerator(dumppath, binning=True, binsize=10, SIncr=100):
         STval = STval + SIncr  # Extract system clock values
         skew.append((STval, RTval - STval))
 
+    if size > 0 and size <= len(skew):
+        skew = skew[0:size]
+
     if binning:
         newskew = binner(skew, binsize)
         return newskew
+
     return skew
 
 
@@ -232,8 +237,9 @@ def drawSkewGraph(skew, drawcurve=True):
     show()
 
 
-def create_type3_signature(path, binning=True, binsize=10, Sincr=100):
-    skew = ICMPSkewGenerator(path, binning, binsize)
+# Todo argument for size of the signature to test
+def create_type3_signature(path, size=0, binning=True, binsize=10):
+    skew = ICMPSkewGenerator(path, binning, binsize, size)
     xvals = []
     yvals = []
     print "xxxxxxxxxxxxxxx"
@@ -246,8 +252,9 @@ def create_type3_signature(path, binning=True, binsize=10, Sincr=100):
     return slope, intercept
 
 
-def create_type4_signature(path, binning=True, binsize=10, Sincr=100):
-    skew = TCPSkewGenerator(path, binning, binsize, Sincr)
+# Todo argument for size of the signature to test
+def create_type4_signature(path, binning=True, binsize=10, Sincr=100, size=0):
+    skew = TCPSkewGenerator(path, binning, binsize, Sincr, size)
     xvals = []
     yvals = []
     print "xxxxxxxxxxxxxxx"

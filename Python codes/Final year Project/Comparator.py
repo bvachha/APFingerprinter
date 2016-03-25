@@ -113,7 +113,9 @@ def findMatchingSignature(test, type):
                     minCloseness = closeness
                     result = key
                     resultSig = DataBase[key]
-        print "The matching device is:" + str(result)
+        print "++++++++++++++++++++++++++++++++++++++++++++++++++"
+        print "CLOSEST MATCHING DEVICE:" + str(result)
+        print "++++++++++++++++++++++++++++++++++++++++++++++++++"
         return result, resultSig
 
     elif type == 2:
@@ -125,7 +127,6 @@ def findMatchingSignature(test, type):
             if DataBase[key][1] == 2:
                 closeness = abs(test[0] - DataBase[key][0][0])
                 results[key] = closeness
-
                 if closeness < minSlope:
                     minSlope = closeness
                     result = key
@@ -133,9 +134,11 @@ def findMatchingSignature(test, type):
         sorted_results = sorted(results.iteritems(), key=operator.itemgetter(1))
         for x in sorted_results:
             print"=========================================================="
-            print x[0]
-            print x[1]
-        print "The matching device is:" + str(result)
+            print "Device" + str(x[0])
+            print "Closeness value" + str(x[1])
+        print "++++++++++++++++++++++++++++++++++++++++++++++++++"
+        print "CLOSEST MATCHING DEVICE:" + str(result)
+        print "++++++++++++++++++++++++++++++++++++++++++++++++++"
 
     elif type == 3:
         minSlope = 9999999999
@@ -146,7 +149,6 @@ def findMatchingSignature(test, type):
             if DataBase[key][1] == 3:
                 closeness = abs(test[0] - DataBase[key][0][0])
                 results[key] = closeness
-
                 if closeness < minSlope:
                     minSlope = closeness
                     result = key
@@ -154,9 +156,11 @@ def findMatchingSignature(test, type):
         sorted_results = sorted(results.iteritems(), key=operator.itemgetter(1))
         for x in sorted_results:
             print"=========================================================="
-            print x[0]
-            print x[1]
-        print "The matching device is:" + str(result)
+            print "Device" + str(x[0])
+            print "Closeness value" + str(x[1])
+        print "+++++++++++++++++++++++++++++++++++++++++++++++++++"
+        print "CLOSEST MATCHING DEVICE:" + str(result)
+        print "++++++++++++++++++++++++++++++++++++++++++++++++++"
 
     elif type == 4:
         minSlope = 9999999999
@@ -177,9 +181,11 @@ def findMatchingSignature(test, type):
         sorted_results = sorted(results.iteritems(), key=operator.itemgetter(1))
         for x in sorted_results:
             print"=========================================================="
-            print x[0]
-            print x[1]
-        print "The matching device is:" + str(result)
+            print "Device" + str(x[0])
+            print "Closeness value" + str(x[1])
+        print "++++++++++++++++++++++++++++++++++++++++++++++++++"
+        print "CLOSEST MATCHING DEVICE:" + str(result)
+        print "++++++++++++++++++++++++++++++++++++++++++++++++++"
 
     else:
         print "Invalid Type"
