@@ -96,32 +96,26 @@ def findMatchingSignature(test, type, threshold=999999):
     :param test: The signature that needs to be checked
     :return:
     """
+    result = 'No Match!'
     if type == 1:
         print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
         print "In Signature match module"
         minCloseness = threshold
-        result = 'NO MATCH'
         resultSig = []
         DataBase = AddToDB.getDB()
         for key in DataBase.keys():
             if DataBase[key][1] == 1:
                 # print "Testing device " + str(key)
                 closeness = compareType1(test, DataBase[key][0])
-                # print "Closeness measure:"
-                # print closeness
-                # print"=========================================================="
                 if closeness < minCloseness:
                     minCloseness = closeness
                     result = key
                     resultSig = DataBase[key]
-        print "++++++++++++++++++++++++++++++++++++++++++++++++++"
-        print "CLOSEST MATCHING DEVICE:" + str(result)
-        print "++++++++++++++++++++++++++++++++++++++++++++++++++"
-        return result
-
+                    print "Closeness measure for device:" + result
+                    print closeness
+                    print"=========================================================="
     elif type == 2:
         minSlope = threshold
-        result = 'NO MATCH'
         results = {}
         DataBase = AddToDB.getDB()
         for key in DataBase.keys():
@@ -137,14 +131,8 @@ def findMatchingSignature(test, type, threshold=999999):
             print"=========================================================="
             print "Device" + str(x[0])
             print "Closeness value" + str(x[1])
-        print "++++++++++++++++++++++++++++++++++++++++++++++++++"
-        print "CLOSEST MATCHING DEVICE:" + str(result)
-        print "++++++++++++++++++++++++++++++++++++++++++++++++++"
-        return result
-
     elif type == 3:
         minSlope = threshold
-        result = ''
         results = {}
         DataBase = AddToDB.getDB()
         for key in DataBase.keys():
@@ -160,14 +148,8 @@ def findMatchingSignature(test, type, threshold=999999):
             print"=========================================================="
             print "Device" + str(x[0])
             print "Closeness value" + str(x[1])
-        print "+++++++++++++++++++++++++++++++++++++++++++++++++++"
-        print "CLOSEST MATCHING DEVICE:" + str(result)
-        print "++++++++++++++++++++++++++++++++++++++++++++++++++"
-        return result
-
     elif type == 4:
         minSlope = threshold
-        result = ''
         results = {}
         DataBase = AddToDB.getDB()
         for key in DataBase.keys():
@@ -186,10 +168,11 @@ def findMatchingSignature(test, type, threshold=999999):
             print"=========================================================="
             print "Device" + str(x[0])
             print "Closeness value" + str(x[1])
-        print "++++++++++++++++++++++++++++++++++++++++++++++++++"
-        print "CLOSEST MATCHING DEVICE:" + str(result)
-        print "++++++++++++++++++++++++++++++++++++++++++++++++++"
-        return result
+
     else:
         print "Invalid Type"
         sys.exit(0)
+    print "++++++++++++++++++++++++++++++++++++++++++++++++++"
+    print "CLOSEST MATCHING DEVICE:" + str(result)
+    print "++++++++++++++++++++++++++++++++++++++++++++++++++"
+    return result

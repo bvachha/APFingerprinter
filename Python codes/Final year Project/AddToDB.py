@@ -136,18 +136,19 @@ def purgeDB():
         return
 
 
-def addAll(path, type, lim=0):
+def addAll(path, type, lim=40000):
+    currentDB = getDB()
     if type == 1:
         folder = os.listdir(path)
         for name in folder:
-            if name[-4:] == 'pcap':
-                sig, status = Type1Utilities.create_type1_signature(path + str(name), lim)
+            if name[-4:] == 'pcap' and name[-4:] not in currentDB.keys():
+                sig = Type1Utilities.create_type1_signature(path + str(name), lim)
                 add2Db(name[:-5], sig, 1)
         printDBkeys()
     elif type == 2:
         folder = os.listdir(path)
         for name in folder:
-            if name[-4:] == 'pcap':
+            if name[-4:] == 'pcap' and name[-4:] not in currentDB.keys():
                 print "Processing " + str(path + str(name))
                 sig = Type2Utilities.create_Type2_Signature(path + str(name))
                 add2Db(name[:-5], sig, 2)
@@ -155,14 +156,14 @@ def addAll(path, type, lim=0):
     elif type == 3:
         folder = os.listdir(path)
         for name in folder:
-            if name[-4:] == 'pcap':
+            if name[-4:] == 'pcap' and name[-4:] not in currentDB.keys():
                 sig = Type3Utilities.create_type3_signature(path + str(name), binning=True)
                 add2Db(name[:-5], sig, 3)
         printDBkeys()
     elif type == 4:
         folder = os.listdir(path)
         for name in folder:
-            if name[-4:] == 'pcap':
+            if name[-4:] == 'pcap' and name[-4:] not in currentDB.keys():
                 sig = Type3Utilities.create_type4_signature(path + str(name), binning=True)
                 add2Db(name[:-5], sig, 4)
         printDBkeys()
@@ -183,7 +184,7 @@ def purge_Type(type):
     Db.close()
     for KeyValue in temp.keys():
         if temp[KeyValue][1] == type:
-            temp._delitem_(KeyValue)
+            temp.pop(KeyValue)
         print "Successfully removed entry: " + KeyValue
     Db = open(pathDB, 'w')
     cPickle.dump(temp, Db, -2)

@@ -181,22 +181,24 @@ def test3_dr_vs_capture_time(start, end, interval, type):
     :param interval:
     :return:
     """
+
     if type == 1:
         xAxis = [x for x in xrange(start, end, interval)]
         y1 = []
         y2 = []
         FP = []
+        AddToDB.addAll("TestDumps/Type1/for_signatures/", 1)
         for x in xrange(start, end, interval):
             lim = x
             truePositive = 0
             falsePositive = 0
             # AddToDB.purgeDB()
             # addAll(lim)
-            folder = os.listdir("TestDumps/Type1/")
+            folder = os.listdir("TestDumps/Type1/for_signatures/")
             for name in folder:
                 if name[-4:] == 'pcap':
-                    sig, status = Type1Utilities.create_type1_signature("TestDumps/Type1/" + str(name), lim)
-                    match, matchSig = Comparator.findMatchingSignature(sig, 1)
+                    sig = Type1Utilities.create_type1_signature("TestDumps/Type1/for_signatures/" + str(name), lim)
+                    match = Comparator.findMatchingSignature(sig, 1)
                     if match == name[:-5]:
                         truePositive += 1
                     else:
@@ -216,12 +218,12 @@ def test3_dr_vs_capture_time(start, end, interval, type):
         ax1.grid(True)
         ax1.set_ylim(0, max(y1) + 5)
         ax1.set_ylabel('True Positives')
-        ax1.set_xlabel('Time')
+        ax1.set_xlabel('Capture Size')
         ax1.set_title('True Positives')
         ax2.grid(True)
         ax2.set_ylim(0, max(y2) + 5)
         ax2.set_ylabel('False Positives')
-        ax2.set_xlabel('Time')
+        ax2.set_xlabel('Capture Size')
         ax2.set_title('False Positives')
         show()
         return
@@ -237,14 +239,19 @@ def test4_dr_vs_traffic_size():
     pass
 
 
-def TPR_vs_FNG():
+def test5_tpr_vs_threshold():
     pass
 
 
-def main():
-    AddToDB.purgeDB()
-    test1_detection_rate_vs_num_devices(4, "TestDumps/Type4/for_signature/", "TestDumps/Type4/for_testing/")
+def test6_fpr_vs_threshold():
+    pass
 
+
+
+def main():
+    AddToDB.purge_Type(1)
+    # test1_detection_rate_vs_num_devices(4, "TestDumps/Type4/for_signature/", "TestDumps/Type4/for_testing/")
+    test3_dr_vs_capture_time(0, 400, 50, 1)
 
 if __name__ == '__main__':
     main()

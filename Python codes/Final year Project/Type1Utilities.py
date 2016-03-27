@@ -95,14 +95,15 @@ def sigGen(bins, percentages, means):
     return signature
 
 
-def create_type1_signature(path, lim=400):
-    status = True
+def create_type1_signature(path, lim=4000):
+    print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+    print "Generating timestamp for:"
+    print path[-15:]
     dump = sniff(offline=path, filter="type mgt subtype probe-resp")
     if dump is None:
         return [], False
     timestamps = []  # List of full resolution timestamps values
     mean = []
-    signature = [[]]
     print "Centering Timestamps"
     for x in xrange(0, len(dump)):
         if float(dump[x].time - dump[0].time) < lim + 1:
@@ -122,4 +123,4 @@ def create_type1_signature(path, lim=400):
     percentageBins = binPerc(binnedStamps, bins)  # Find % of total packets in each bin
     signature = sigGen(bins, percentageBins, means)
     print "Signature successfully created"
-    return signature, status
+    return signature
