@@ -94,7 +94,7 @@ def add_New_Signature():
             path = raw_input(">")
             print "Enter the device ID"
             id = raw_input(">")
-            driversignature, status = Type2Utilities.create_Type2_Signature(path)
+            driversignature, status = Type2Utilities.create_type2_signature(path)
             if driversignature != None:
                 print "Signature has been created"
                 AddToDB.add2Db(id, driversignature, 2)
@@ -120,14 +120,14 @@ def add_New_Signature():
             if signature_Feature == 1:
                 skew = Type3Utilities.ICMPSkewGenerator(path)
                 if skew != None:
-                    slope, intercept = Type2Utilities.create_Type2_Signature(skew)
+                    slope, intercept = Type2Utilities.create_type2_signature(skew)
                     print "Signature has been created"
                     AddToDB.add2Db(id, (slope, intercept), 3)
                     print "Signature successfully added to database"
             elif signature_Feature == 2:
                 skew = Type3Utilities.TCPSkewGenerator(path)
                 if skew != None:
-                    slope, intercept = Type2Utilities.create_Type2_Signature(skew)
+                    slope, intercept = Type2Utilities.create_type2_signature(skew)
                     print "Signature has been created"
                     AddToDB.add2Db(id, (slope, intercept), 4)
                     print "Signature successfully added to database"
@@ -160,7 +160,7 @@ def authorization_check():
         if type == 1:
             pass
         elif type == 2:
-            driversignature, status = Type2Utilities.create_Type2_Signature(path)
+            driversignature, status = Type2Utilities.create_type2_signature(path)
             result = Comparator.findMatchingSignature(driversignature)
             print result
         elif type == 3:

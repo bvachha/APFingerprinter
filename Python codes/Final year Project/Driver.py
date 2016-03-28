@@ -99,7 +99,7 @@ def main():
     # skew.append(Type2Utilities.skew_generator_DPKT("TestDumps/Type2/Device2.pcap"))
     # skew.append(Type2Utilities.skew_generator_DPKT("TestDumps/Type2/Device3.pcap"))
     # skew.append(Type2Utilities.skew_generator_DPKT("TestDumps/Type2/CiscoLi(virus308)-7.pcap"))
-    # Test = Type2Utilities.create_Type2_Signature("TestDumps/Type2/CiscoLi(virus308)-1.pcap")
+    # Test = Type2Utilities.create_type2_signature("TestDumps/Type2/CiscoLi(virus308)-1.pcap")
     # skew.append(Type2Utilities.skew_generator_DPKT("TestDumps/Type2/54b80a95ce07(QorqlBSNL)_1.pcap"))
 
     # AddToDB.printDBkeys()

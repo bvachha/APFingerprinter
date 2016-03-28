@@ -141,31 +141,31 @@ def addAll(path, type, lim=40000):
     if type == 1:
         folder = os.listdir(path)
         for name in folder:
-            if name[-4:] == 'pcap' and name[-4:] not in currentDB.keys():
+            if name[-4:] == 'pcap' and name[:12] not in currentDB.keys():
                 sig = Type1Utilities.create_type1_signature(path + str(name), lim)
-                add2Db(name[:-5], sig, 1)
+                add2Db(name[:12], sig, 1)
         printDBkeys()
     elif type == 2:
         folder = os.listdir(path)
         for name in folder:
-            if name[-4:] == 'pcap' and name[-4:] not in currentDB.keys():
+            if name[-4:] == 'pcap' and name[:12] not in currentDB.keys():
                 print "Processing " + str(path + str(name))
-                sig = Type2Utilities.create_Type2_Signature(path + str(name))
-                add2Db(name[:-5], sig, 2)
+                sig = Type2Utilities.create_type2_signature(path + str(name))
+                add2Db(name[:12], sig, 2)
         printDBkeys()
     elif type == 3:
         folder = os.listdir(path)
         for name in folder:
-            if name[-4:] == 'pcap' and name[-4:] not in currentDB.keys():
+            if name[-4:] == 'pcap' and name[:12] not in currentDB.keys():
                 sig = Type3Utilities.create_type3_signature(path + str(name), binning=True)
-                add2Db(name[:-5], sig, 3)
+                add2Db(name[:12], sig, 3)
         printDBkeys()
     elif type == 4:
         folder = os.listdir(path)
         for name in folder:
-            if name[-4:] == 'pcap' and name[-4:] not in currentDB.keys():
+            if name[-4:] == 'pcap' and name[:12] not in currentDB.keys():
                 sig = Type3Utilities.create_type4_signature(path + str(name), binning=True)
-                add2Db(name[:-5], sig, 4)
+                add2Db(name[:12], sig, 4)
         printDBkeys()
     else:
         print "Invalid Type"

@@ -73,6 +73,7 @@ def skew_generator_DPKT(dumppath, binning=True, binsize=10, size=0):
     :return: updated skew list
     """
     print ("Creating skew list for file: " + dumppath)
+    counter = 0
     sysclkinit = 0  # Initial system clock value
     apclkinit = 0  # Initial AP clock value
     skew = []  # List of skews
@@ -81,6 +82,8 @@ def skew_generator_DPKT(dumppath, binning=True, binsize=10, size=0):
     dl = pc.datalink()
     if pc.datalink() == 127:  # Check if RadioTap
         for ts, rawdata in pc:
+            if counter > size:
+                break
             tap = dpkt.radiotap.Radiotap(rawdata)  # Format as a Radiotap packet
             t_len = binascii.hexlify(
                 rawdata[2:3])  # Extract the length of the radiotap data, including the radiotap header.
@@ -97,10 +100,9 @@ def skew_generator_DPKT(dumppath, binning=True, binsize=10, size=0):
                 else:
                     skew.append([float(Decimal(ts) - sysclkinit),
                                  float((Decimal(time) - apclkinit) - (Decimal(ts) - sysclkinit) * 1000000)])
+            counter += 1
     print("Skew successfully generated")
     print ("Number of packets analysed:" + str(len(skew)))
-    if size > 0 and size <= len(skew):
-        skew = skew[0:size]
     if binning:
         newskew = binner(skew, binsize)
         return newskew
@@ -119,26 +121,6 @@ def skewfilterScapy(dumppath):  # uses a scapy implementation to generate skew t
             (Decimal(sysClock[x]) / 1000000, Decimal(apClock[x]) - Decimal(sysClock[x])))  # Generate skew tuples
     print("Skew successfully generated")
     return skew
-
-
-# Todo argument for size of the signature to test
-def create_Type2_Signature(path, size=0):
-    """
-    creates the final signature from the pcap file
-    :param path: path to the pcap file containing the signature
-    :return: slope and intercept pair for the device
-    """
-    skew = skew_generator_DPKT(path, size)
-    xvals = []
-    yvals = []
-    print "xxxxxxxxxxxxxxxxxxxxxxxxxx"
-    for j in xrange(len(skew)):
-        xvals.append(
-            float(skew[j][0] - skew[0][0]))  # List of X coordinates as the centered timestamp values of fingerprinter
-        yvals.append(
-            float(skew[j][1] - skew[0][1]))  # List of  Y coordinates as the difference values of the device timestamps
-    slope, intercept = np.polyfit(xvals, yvals, 1)
-    return slope, intercept
 
 
 def drawSkewGraph(skew, drawcurve=True):
@@ -179,10 +161,30 @@ def drawSkewGraph(skew, drawcurve=True):
         if drawcurve:
             ax1.plot(xvals, ablineValues, color=currcol)
     ax1.grid(True)
-    ax1.set_ylim(0, max(yvals) + 5)
+    ax1.set_ylim(min(y1), max(yvals) + 5)
     ax1.set_ylabel('Skew')
     ax1.set_xlabel('Time')
     ax1.legend()
     for label in ax1.get_xticklabels():
         label.set_color('r')
     show()
+
+
+# Todo argument for size of the signature to test
+def create_type2_signature(path, size=3000):
+    """
+    creates the final signature from the pcap file
+    :param path: path to the pcap file containing the signature
+    :return: slope and intercept pair for the device
+    """
+    skew = skew_generator_DPKT(path, size=size)
+    xvals = []
+    yvals = []
+    print "xxxxxxxxxxxxxxxxxxxxxxxxxx"
+    for j in xrange(len(skew)):
+        xvals.append(
+            float(skew[j][0] - skew[0][0]))  # List of X coordinates as the centered timestamp values of fingerprinter
+        yvals.append(
+            float(skew[j][1] - skew[0][1]))  # List of  Y coordinates as the difference values of the device timestamps
+    slope, intercept = np.polyfit(xvals, yvals, 1)
+    return slope, intercept

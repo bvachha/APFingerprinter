@@ -78,7 +78,7 @@ def test1_detection_rate_vs_num_devices(type, signature_directory, test_director
             if name[-4:] == 'pcap':
                 truepositive = 0
                 falsepositive = 0
-                sig = Type2Utilities.create_Type2_Signature(signature_directory + str(name))
+                sig = Type2Utilities.create_type2_signature(signature_directory + str(name))
                 AddToDB.add2Db(name[:12], sig, 2)
                 db_dump = AddToDB.getDB()
                 test_folder = os.listdir(test_directory)
@@ -86,7 +86,7 @@ def test1_detection_rate_vs_num_devices(type, signature_directory, test_director
                 for testcase in test_folder:
                     if testcase[-4:] == 'pcap' and testcase[:12] in db_dump.keys():
 
-                        test = Type2Utilities.create_Type2_Signature(test_directory + str(testcase))
+                        test = Type2Utilities.create_type2_signature(test_directory + str(testcase))
                         print db_dump
                         print test
                         match = Comparator.findMatchingSignature(test, 2)
@@ -179,7 +179,7 @@ def test3_dr_vs_capture_time(start, end, interval, type):
     :param start:
     :param end:
     :param interval:
-    :return:
+    :return: nothing
     """
 
     if type == 1:
@@ -192,18 +192,16 @@ def test3_dr_vs_capture_time(start, end, interval, type):
             lim = x
             truePositive = 0
             falsePositive = 0
-            # AddToDB.purgeDB()
-            # addAll(lim)
-            folder = os.listdir("TestDumps/Type1/for_signatures/")
+            folder = os.listdir("TestDumps/Type1/for_testing/")
             for name in folder:
                 if name[-4:] == 'pcap':
-                    sig = Type1Utilities.create_type1_signature("TestDumps/Type1/for_signatures/" + str(name), lim)
+                    sig = Type1Utilities.create_type1_signature("TestDumps/Type1/for_testing/" + str(name), lim)
                     match = Comparator.findMatchingSignature(sig, 1)
-                    if match == name[:-5]:
+                    if match == name[:12]:
                         truePositive += 1
                     else:
                         falsePositive += 1
-                        FP.append((match, name[:-5]))
+                    FP.append((match, name[:12]))
             y1.append(truePositive)
             y2.append(falsePositive)
         print xAxis
@@ -226,13 +224,96 @@ def test3_dr_vs_capture_time(start, end, interval, type):
         ax2.set_xlabel('Capture Size')
         ax2.set_title('False Positives')
         show()
-        return
-    elif type == 2:
-        pass
-        # Todo type 2 binning
-    elif type == 3:
-        pass
-        # Todo type 3 binning
+
+    elif type == 2:  # Todo type 2 binning test
+        xAxis = [x for x in xrange(start, end, interval)]
+        y1 = []
+        y2 = []
+        FP = []
+        AddToDB.addAll("TestDumps/Type2/for_signatures/", 2)
+        for x in xrange(start, end, interval):
+            capture_size = x
+            truePositive = 0
+            falsePositive = 0
+            folder = os.listdir("TestDumps/Type2/for_testing/")
+            for name in folder:
+                if name[-4:] == 'pcap':
+                    sig = Type2Utilities.create_type2_signature("TestDumps/Type2/for_testing/" + str(name),
+                                                                size=capture_size)
+                    match = Comparator.findMatchingSignature(sig, 2)
+                    if match == name[:12]:
+                        truePositive += 1
+                    else:
+                        falsePositive += 1
+                    FP.append((match, name[:12]))
+            y1.append(truePositive)
+            y2.append(falsePositive)
+        print xAxis
+        print y1
+        print y2
+        print(FP)
+        fig = figure(1)
+        ax1 = fig.add_subplot(121)
+        ax2 = fig.add_subplot(122)
+        ax1.plot(xAxis, y1, '-b')
+        ax2.plot(xAxis, y2, '-r')
+        ax1.grid(True)
+        ax1.set_ylim(min(y1) - 5, max(y1) + 5)
+        ax1.set_ylabel('True Positives')
+        ax1.set_xlabel('Capture Size')
+        ax1.set_title('True Positives')
+        ax2.grid(True)
+        ax2.set_ylim(min(y2) - 5, max(y2) + 5)
+        ax2.set_ylabel('False Positives')
+        ax2.set_xlabel('Capture Size')
+        ax2.set_title('False Positives')
+        show()
+
+
+
+    elif type == 4:  # Todo type 4 binning
+        xAxis = [x for x in xrange(start, end, interval)]
+        y1 = []
+        y2 = []
+        FP = []
+        AddToDB.addAll("TestDumps/Type4/for_signatures/", 4)
+        for x in xrange(start, end, interval):
+            capture_size = x
+            truePositive = 0
+            falsePositive = 0
+            folder = os.listdir("TestDumps/Type4/for_testing/")
+            for name in folder:
+                if name[-4:] == 'pcap':
+                    sig = Type3Utilities.create_type4_signature("TestDumps/Type4/for_testing/" + str(name),
+                                                                size=capture_size)
+                    match = Comparator.findMatchingSignature(sig, 4)
+                    if match == name[:12]:
+                        truePositive += 1
+                    else:
+                        falsePositive += 1
+                        FP.append((match, name[:12]))
+            y1.append(truePositive)
+            y2.append(falsePositive)
+        print xAxis
+        print y1
+        print y2
+        print(FP)
+        fig = figure(1)
+        ax1 = fig.add_subplot(121)
+        ax2 = fig.add_subplot(122)
+        ax1.plot(xAxis, y1, '-b')
+        ax2.plot(xAxis, y2, '-r')
+        ax1.grid(True)
+        ax1.set_ylim(min(y1) - 5, max(y1) + 5)
+        ax1.set_ylabel('True Positives')
+        ax1.set_xlabel('Capture Size')
+        ax1.set_title('True Positives')
+        ax2.grid(True)
+        ax2.set_ylim(min(y2) - 5, max(y2) + 5)
+        ax2.set_ylabel('False Positives')
+        ax2.set_xlabel('Capture Size')
+        ax2.set_title('False Positives')
+        show()
 
 
 def test4_dr_vs_traffic_size():
@@ -249,9 +330,9 @@ def test6_fpr_vs_threshold():
 
 
 def main():
-    AddToDB.purge_Type(1)
-    # test1_detection_rate_vs_num_devices(4, "TestDumps/Type4/for_signature/", "TestDumps/Type4/for_testing/")
-    test3_dr_vs_capture_time(0, 400, 50, 1)
+    # AddToDB.purge_Type(2)
+    # test1_detection_rate_vs_num_devices(4, "TestDumps/Type4/for_signatures/", "TestDumps/Type4/for_testing/")
+    test3_dr_vs_capture_time(100, 1000, 100, 4)
 
 if __name__ == '__main__':
     main()

@@ -111,9 +111,10 @@ def findMatchingSignature(test, type, threshold=999999):
                     minCloseness = closeness
                     result = key
                     resultSig = DataBase[key]
-                    print "Closeness measure for device:" + result
-                    print closeness
                     print"=========================================================="
+                    print "Device:" + result
+                    print "Closeness measure:" + str(closeness)
+
     elif type == 2:
         minSlope = threshold
         results = {}
@@ -129,8 +130,8 @@ def findMatchingSignature(test, type, threshold=999999):
         sorted_results = sorted(results.iteritems(), key=operator.itemgetter(1))
         for x in sorted_results:
             print"=========================================================="
-            print "Device" + str(x[0])
-            print "Closeness value" + str(x[1])
+            print "Device:  " + str(x[0])
+            print "Closeness value: " + str(x[1])
     elif type == 3:
         minSlope = threshold
         results = {}
@@ -146,8 +147,8 @@ def findMatchingSignature(test, type, threshold=999999):
         sorted_results = sorted(results.iteritems(), key=operator.itemgetter(1))
         for x in sorted_results:
             print"=========================================================="
-            print "Device" + str(x[0])
-            print "Closeness value" + str(x[1])
+            print "Device:  " + str(x[0])
+            print "Closeness value: " + str(x[1])
     elif type == 4:
         minSlope = threshold
         results = {}
@@ -166,8 +167,8 @@ def findMatchingSignature(test, type, threshold=999999):
         sorted_results = sorted(results.iteritems(), key=operator.itemgetter(1))
         for x in sorted_results:
             print"=========================================================="
-            print "Device" + str(x[0])
-            print "Closeness value" + str(x[1])
+            print "Device:  " + str(x[0])
+            print "Closeness value: " + str(x[1])
 
     else:
         print "Invalid Type"
